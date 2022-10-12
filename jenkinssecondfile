@@ -38,9 +38,9 @@ node {
         currentBuild.result"FAILURE"
         throw e
         } //Catch closing
-        finally{
+        Finally{
          slackNotifications(currentBuild.result)
-         }//finally closing
+         }//Finally closing
 
 }//node closing
 
