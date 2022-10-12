@@ -19,16 +19,16 @@ node {
         sh "${mavenHome}/bin/mvn clean sonar:sonar"
         }
         
-        /*
+     
          stage('Upload Artifacts into nexus'){
         sh "${mavenHome}/bin/mvn clean deploy"
          }  
          
-       */
+     
          
         stage('deploy app into tomcat service'){
         sshagent(['39890330-df3e-4074-9b31-d9aa5c856bb7']) {
-            sh "scp -o  StrictHostKeyChecking=no target/maven-web-application.war  ec2-user@13.127.146.44:/opt/apache-tomcat-9.0.65/webapps/"
+            sh "scp -o  StrictHostKeyChecking=no target/maven-web-application.war  ec2-user@172.31.33.187:/opt/apache-tomcat-9.0.65/webapps/"
         }
             
         }
