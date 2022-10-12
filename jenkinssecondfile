@@ -1,0 +1,35 @@
+node {
+    
+    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), 
+    [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([cron('* * * * *')])])
+    
+    echo "The Job name is: ${env.JOB_NAME}"
+    echo "The Node name is: ${env.NODE_NAME}"
+    echo "The Buildnumber is:${env.BUILD_NUMBER}"
+    
+    def mavenHome = tool name: 'maven3.8.6'
+    stage('checkoutout'){
+    git branch: 'development', credentialsId: '16e8318c-4c5a-40f3-96c0-b3d787e0313a',
+    url: 'https://github.com/bm-auggitorg/maven-web-application.git'
+    }
+        stage('Build'){
+        sh "${mavenHome}/bin/mvn package"
+    }
+        stage('Execute sonar report'){
+        sh "${mavenHome}/bin/mvn clean sonar:sonar"
+        }
+        
+        /*
+         stage('Upload Artifacts into nexus'){
+        sh "${mavenHome}/bin/mvn clean deploy"
+         }  
+         
+       */
+         
+        stage('deploy app into tomcat service'){
+        sshagent(['39890330-df3e-4074-9b31-d9aa5c856bb7']) {
+            sh "scp -o  StrictHostKeyChecking=no target/maven-web-application.war  ec2-user@13.127.146.44:/opt/apache-tomcat-9.0.65/webapps/"
+        }
+            
+        }
+}
