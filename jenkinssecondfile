@@ -34,7 +34,7 @@ node {
         }
             
         } //try closing
-         catch(e){
+         Catch(e){
         currentBuild.result"FAILURE"
         throw e
         } //Catch closing
