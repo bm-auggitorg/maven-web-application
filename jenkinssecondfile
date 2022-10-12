@@ -1,6 +1,5 @@
 node {
-
-     try {
+try{
     
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), 
     [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([cron('* * * * *')])])
@@ -33,14 +32,18 @@ node {
             sh "scp -o  StrictHostKeyChecking=no target/maven-web-application.war  ec2-user@172.31.33.187:/opt/apache-tomcat-9.0.65/webapps/"
         }
             
-        } //try closing
-         Catch(e){
+        } 
+        
+        }//try closing
+         
+        Catch(e){
         currentBuild.result"FAILURE"
         throw e
         } //Catch closing
+        
         Finally{
-         slackNotifications(currentBuild.result)
-         }//Finally closing
+        slackNotifications(currentBuild.result)
+        }//Finally closing
 
 }//node closing
 
@@ -73,6 +76,6 @@ def slackNotifications(String buildStatus = 'STARTED') {
   }
 
   // Send notifications
-  slackSend (color: colorCode, message: summary, channel: "#walmart")
+  slackSend (color: colorCode, message: summary, channel: "#walmart"){
 }
 }
