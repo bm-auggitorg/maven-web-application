@@ -1,7 +1,7 @@
 node {
 
    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), 
-    [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([cron('* * * * *')])])
+    [$class: 'JobLocalConfiguration', changeReasonComment: ''], 
     
     echo "The Job name is: ${env.JOB_NAME}"
     echo "The Node name is: ${env.NODE_NAME}"
